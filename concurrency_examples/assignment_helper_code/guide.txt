@@ -1,0 +1,20 @@
+A free bird leaps
+on the back of the wind   
+and floats downstream   
+till the current ends
+and dips his wing
+in the orange sun rays
+and dares to claim the sky.
+
+But a bird that stalks
+down his narrow cage
+can seldom see through
+his bars of rage
+his wings are clipped and   
+his feet are tied
+so he opens his throat to sing.
+
+This base code still needs to be put into a working program, and will not work
+without further alterations in your program, as I've cut bits out.
+It exists primarily to demonstrate the logic flow and to provide a template to
+work from.
