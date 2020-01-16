@@ -24,7 +24,7 @@ void thread1() {
     cout << // information telling you which thread is running: "
     sleep_for(std::chrono::seconds(2)); // introduced delay
     lck.lock();
-    threadControlInt = 2;
+    threadControlInt = 4;
     lck.unlock();
     condVar.notify_all();
 }

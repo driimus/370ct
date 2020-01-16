@@ -14,7 +14,6 @@ int main (void)
  #pragma omp parallel for schedule (dynamic,2) private(multiplier)
  for (int count=0; count<16;++count)
      {
-
       std::this_thread::sleep_for(std::chrono::seconds(2));
      }
  return 0;
