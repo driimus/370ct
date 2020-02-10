@@ -1,6 +1,7 @@
 #include "part_one.hpp"
 
 void checkFileAccess(std::ifstream &file) {
+	// Terminate the process if file cannot be opened
 	if (!file) {
 		std::cerr << "ERR: Could not access file.\n";
 		exit(EXIT_FAILURE);
