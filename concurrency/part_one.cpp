@@ -1,7 +1,4 @@
-#include <iostream>
-#include <fstream>
-#include <chrono>
-#include <vector>
+#include "part_one.hpp"
 
 void checkFileAccess(std::ifstream &file) {
 	if (!file) {
@@ -10,7 +7,7 @@ void checkFileAccess(std::ifstream &file) {
 	}
 }
 
-std::vector<std::string> getFileContents(std::string filename) {
+auto getFileContents(std::string filename) -> std::vector<std::string> {
 	std::vector<std::string> contents;
 
 	std::ifstream file(filename);
@@ -23,12 +20,4 @@ std::vector<std::string> getFileContents(std::string filename) {
 	file.close();
 
 	return contents;
-}
-
-int main() {
-	std::vector<std::string> toTheRain;
-
-	toTheRain = getFileContents("to_the_rain.txt");
-
-	return 0;
 }
