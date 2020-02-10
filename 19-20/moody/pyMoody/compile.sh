@@ -1,0 +1,1 @@
+make clean && sh swig.sh && make 
