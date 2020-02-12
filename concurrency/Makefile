@@ -4,7 +4,7 @@ LDFLAGS =
 
 #----------
 
-EXE = fluffypinkunicornsaregreat
+EXE = app
 
 OBJS = $(patsubst %.cpp,%.o,$(wildcard *.cpp))
 
