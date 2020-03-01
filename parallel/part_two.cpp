@@ -9,8 +9,7 @@
 
 enum axes : int { X = 0, Y, Z };
 
-typedef std::vector<int> point;
-typedef std::vector<std::vector<int>> vector<point>;
+using std::vector;
 
 auto getRandomInt(int from, int to) -> int {
 	std::uniform_int_distribution<int> range{from, to};
@@ -27,8 +26,8 @@ auto getRandomDirection() -> std::pair<int, int> {
 	};
 }
 
-auto getCentroid(vector<point> particles) -> point {
-	point centroid(3);
+auto getCentroid(vector<vector<int>> particles) -> vector<int> {
+	vector<int> centroid(3);
 
 	for (int coord=0; coord<centroid.size(); ++coord) {
 		// reduce into sum of each coord
@@ -44,7 +43,7 @@ auto getCentroid(vector<point> particles) -> point {
 	return centroid;
 }
 
-void display(vector<point> vectors) {
+void display(vector<vector<int>> vectors) {
 	for (int i=0; i<vectors.size(); ++i) {
 		std::cout << "Particle " << i+1 << ": ";
 
@@ -56,7 +55,7 @@ void display(vector<point> vectors) {
 	}
 }
 
-void randomlyMoveParticles(vector<point> &particles) {
+void randomlyMoveParticles(vector<vector<int>> &particles) {
 	for (int i=0; i<10; ++i) {
 
 		// Iterate through all the particles
@@ -78,14 +77,14 @@ void randomlyMoveParticles(vector<point> &particles) {
 	}
 }
 
-void moveParticle(point& particle, point& distance, int axis) {
+void moveParticle(vector<int>& particle, vector<int>& distance, int axis) {
 	// Move the particle on this axis
 	particle[axis] += distance[axis] > 0 ? 1 : -1;
 	// Update the remaining distance
 	distance[axis] += distance[axis] > 0 ? -1 : 1;
 }
 
-void moveParticlesTowardsCentroid(vector<point>& particles, vector<point>& distances) {
+void moveParticlesTowardsCentroid(vector<vector<int>>& particles, vector<vector<int>>& distances) {
 
 	for (int i=0; i<10; ++i) {
 		// Iterate through all the vectors
@@ -107,7 +106,7 @@ void moveParticlesTowardsCentroid(vector<point>& particles, vector<point>& dista
 
 }
 
-void getDistancesToCentroid(vector<point>& particles, point& centroid) {
+void getDistancesToCentroid(vector<vector<int>>& particles, vector<int>& centroid) {
 	// Iterate through all the particles
 	#pragma omp parallel for schedule(runtime)
 	for(auto &part: particles) {
@@ -118,7 +117,7 @@ void getDistancesToCentroid(vector<point>& particles, point& centroid) {
 
 auto main() -> int {
 
-	vector<point> particles = {
+	vector<vector<int>> particles = {
 		{    5,   14,   10 },
 		{    7,   -8,  -14 },
 		{   -2,    9,    8 },
@@ -137,14 +136,14 @@ auto main() -> int {
 
 	randomlyMoveParticles(particles);
 
-	point centroid = getCentroid(particles);
+	vector<int> centroid = getCentroid(particles);
 	std::cout<<"\nLocated centre at: "
 		<<centroid[X]<<' '
 		<<centroid[Y]<<' '
 		<<centroid[Z]<<'\n';
 
 	// Get the original distance from each particle to the centroid.
-	vector<point> distances(particles.begin(), particles.end());
+	vector<vector<int>> distances(particles.begin(), particles.end());
 	getDistancesToCentroid(distances, centroid);
 
 	std::cout<<"\nInitial distances from centroid:\n";
