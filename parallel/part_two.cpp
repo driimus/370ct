@@ -147,6 +147,9 @@ auto main() -> int {
 		}
 	}
 
+	// TO-DO: Work out the closest vector for each in the set
+	//
+
 	// Calculate the geometric centre of all the particles.
 	vector<int> centroid = getCentroid(particles);
 
