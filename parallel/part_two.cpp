@@ -6,6 +6,9 @@
 #include <cstdlib>
 #include <cstdio>
 #include <random>
+#include <limits>
+
+#define DOUBLE_MAX std::numeric_limits<double>::max()
 
 enum axes : int { X = 0, Y, Z };
 
@@ -31,13 +34,13 @@ auto getRandomDirection() -> std::pair<int, int> {
 
 // Prints out space-separated coordinates of a 3D position.
 void displayPosition(const vector<int> &position) {
-		std::cout << position[X] << ' '
-							<< position[Y] << ' '
-							<< position[Z] << '\n';
+	std::cout.width(5); std::cout << position[X] << ' ';
+	std::cout.width(5); std::cout << position[Y] << ' ';
+	std::cout.width(5); std::cout << position[Z] << '\n';
 }
 
 // Prints out the coordinates of every position from a given list.
-void displayPositions(vector<vector<int>> positions) {
+void displayPositions(const vector<vector<int>>& positions) {
 	for (int i = 0; i < positions.size(); ++i) {
 		std::cout << "Position " << i + 1 << ": ";
 		displayPosition(positions[i]);
@@ -116,6 +119,49 @@ void moveParticlesTowardsCentroid(vector<vector<int>>& particles, vector<vector<
 	}
 }
 
+// Calculates the distance between two positions in a 3D coordinate plane.
+auto getDistance(const vector<int>& p1, const vector<int>& p2) -> double {
+	return sqrt(
+	    pow( p1[X] - p2[X], 2 ) +
+	    pow( p1[Y] - p2[Y], 2 ) +
+	    pow( p1[Z] - p2[Z], 2 )
+	);
+}
+
+// Displays the positions of a pair of particles.
+void displayNeighbour(const vector<vector<int>>& particles, int particleIdx, int neighbourIdx) {
+	std::cout << "Position " << particleIdx + 1;
+	std::cout << " - closest neighbour is " << neighbourIdx + 1 << ":\n";
+	displayPosition(particles[particleIdx]);
+	displayPosition(particles[neighbourIdx]);
+}
+
+// Computes the closest neighbour for each individual partcle.
+void findClosestNeighbours(const vector<vector<int>>& particles) {
+	// Initialize minimum distances with an Infinite value.
+	vector<double> mins(particles.size(), DOUBLE_MAX);
+	// Initialize closest neighbour indices with 0 as default.
+	vector<int> neighbours(particles.size());
+
+	for (int i = 0; i < particles.size(); ++i) {
+		for (int j = i + 1; j < particles.size(); ++j) {
+			double distance = getDistance(particles[i], particles[j]);
+
+			if (distance < mins[i]) {
+				mins[i] = distance;
+				neighbours[i] = j;
+			}
+
+			if (distance < mins[j]) {
+				mins[j] = distance;
+				neighbours[j] = i;
+			}
+		}
+
+		displayNeighbour(particles, i, neighbours[i]);
+	}
+}
+
 auto main() -> int {
 
 	vector<vector<int>> particles = {
@@ -147,8 +193,9 @@ auto main() -> int {
 		}
 	}
 
-	// TO-DO: Work out the closest vector for each in the set
-	//
+	// Work out the closest neighbour of each particle.
+	std::cout << "\nClosest neighbours:\n";
+	findClosestNeighbours(particles);
 
 	// Calculate the geometric centre of all the particles.
 	vector<int> centroid = getCentroid(particles);
