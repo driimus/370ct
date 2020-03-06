@@ -138,23 +138,26 @@ void displayNeighbour(const vector<vector<int>>& particles, int particleIdx, int
 
 // Computes the closest neighbour for each individual partcle.
 void findClosestNeighbours(const vector<vector<int>>& particles) {
+	const int particleCount = particles.size();
+
 	// Initialize minimum distances with an Infinite value.
-	vector<double> mins(particles.size(), DOUBLE_MAX);
+	vector<double> mins(particleCount, DOUBLE_MAX);
 	// Initialize closest neighbour indices with 0 as default.
-	vector<int> neighbours(particles.size());
+	vector<int> neighbours(particleCount);
 
-	for (int i = 0; i < particles.size(); ++i) {
-		for (int j = i + 1; j < particles.size(); ++j) {
-			double distance = getDistance(particles[i], particles[j]);
+	for (int particleIdx = 0; particleIdx < particleCount; ++particleIdx) {
+		// Find the closest neighbour of the current particle.
+		for (int neighbourIdx = i + 1; neighbourIdx < particleCount; ++neighbourIdx) {
+			double distance = getDistance(particles[particleIdx], particles[neighbourIdx]);
 
-			if (distance < mins[i]) {
-				mins[i] = distance;
-				neighbours[i] = j;
+			// Update closest neighbour for both particles.
+			if (distance < mins[particleIdx]) {
+				mins[particleIdx] = distance;
+				neighbours[particleIdx] = neighbourIdx;
 			}
-
-			if (distance < mins[j]) {
-				mins[j] = distance;
-				neighbours[j] = i;
+			if (distance < mins[neighbourIdx]) {
+				mins[neighbourIdx] = distance;
+				neighbours[neighbourIdx] = particleIdx;
 			}
 		}
 
