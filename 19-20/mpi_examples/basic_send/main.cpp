@@ -18,16 +18,13 @@ int rank,size, namelen;
   if (rank==0) {
     dest = (rand() % 10)+1;
     std::cout << "> destination: " << dest << std::endl;
-      MPI_Send(&send_num, dest, MPI_INT, 1, 0, MPI_COMM_WORLD);
-     std::cout << "> " <<node_name<<" sent " << send_num << "  to another node"<< std::endl;
-  }
-     std::cout << "> rank: " << rank << std::endl;
-     std::cout << "> destination: " << dest << std::endl;
-     if (rank == 3){
-      std::cout << "> reached the code for destination: " << dest << std::endl;
-      MPI_Recv(&received, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+    MPI_Send(&send_num, dest, MPI_INT, 1, 0, MPI_COMM_WORLD);
+    std::cout << "> " <<node_name<<" sent " << send_num << "  to another node"<< std::endl;
+  } else if(rank == 3){
+     std::cout << "> reached the code for destination: " << dest << std::endl;
+     MPI_Recv(&received, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+     MPI_Recv(&received, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
      std::cout << "> " << received << " received by "<< node_name<< std::endl;
-
   }
   MPI_Finalize();
 }
