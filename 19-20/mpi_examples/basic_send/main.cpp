@@ -16,10 +16,10 @@ int rank,size, namelen;
   int dest = 1; 
   if (rank==0) {
     MPI_Send(&send_num, dest, MPI_INT, 1, 0, MPI_COMM_WORLD);
-    std::cout << "> " <<node_name<<" sent " << send_num << "  to next node in line"<< std::endl;
+    std::cout << "> " <<node_name<<" Sent " << send_num << "  To next node in line"<< std::endl;
   } else if(rank == dest){
      MPI_Recv(&received, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-     std::cout << "> " << received << " Number received by "<< node_name<< std::endl;
+     std::cout << "> Number: " << received << " Received by "<< node_name<< std::endl;
   }
   MPI_Finalize();
 }
