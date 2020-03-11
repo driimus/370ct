@@ -23,7 +23,7 @@ int rank,size, namelen;
   }
      std::cout << "> rank: " << rank << std::endl;
      std::cout << "> destination: " << dest << std::endl;
-  if (rank == dest){
+     if (rank == (int *)dest){
       std::cout << "> destination: " << dest << std::endl;
       MPI_Recv(&received, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,
                MPI_STATUS_IGNORE);
