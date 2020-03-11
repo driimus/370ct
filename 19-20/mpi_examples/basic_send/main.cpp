@@ -22,6 +22,7 @@ int rank,size, namelen;
      std::cout << "> " <<node_name<<" sent " << send_num << "  to another node"<< std::endl;
   }
      std::cout << "> rank: " << rank << std::endl;
+     std::cout << "> destination: " << dest << std::endl;
   if (rank == dest){
       std::cout << "> destination: " << dest << std::endl;
       MPI_Recv(&received, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,
