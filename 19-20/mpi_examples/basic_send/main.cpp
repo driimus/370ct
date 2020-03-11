@@ -17,7 +17,7 @@ int rank,size, namelen;
         
 if (rank==0) {
   dest = (rand() % 10)+1;
-  std::cout << "> destination" << dest << std::endl;
+  std::cout << "> destination: " << dest << std::endl;
       MPI_Send(&send_num, dest, MPI_INT, 1, 0, MPI_COMM_WORLD);
      std::cout << "> " <<node_name<<" sent " << send_num << "  to another node"<< std::endl;
     }
