@@ -23,6 +23,7 @@ if (rank==0) {
     }
 
 if (rank ==dest){
+    std::cout << "> destination: " << dest << std::endl;
       MPI_Recv(&received, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,
                MPI_STATUS_IGNORE);
      std::cout << "> " << received << " received by "<< node_name<< std::endl;
