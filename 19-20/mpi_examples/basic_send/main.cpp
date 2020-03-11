@@ -23,9 +23,7 @@ int rank,size, namelen;
   }
      std::cout << "> rank: " << rank << std::endl;
      std::cout << "> destination: " << dest << std::endl;
-           MPI_Recv(&received, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-     std::cout << "> " << received << " received by "<< node_name<< std::endl;
-     if (rank == dest){
+     if (rank == 3){
       std::cout << "> reached the code for destination: " << dest << std::endl;
       MPI_Recv(&received, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
      std::cout << "> " << received << " received by "<< node_name<< std::endl;
