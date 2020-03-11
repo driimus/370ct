@@ -15,15 +15,15 @@ int rank,size, namelen;
   memset(node_name+namelen,0,MPI_MAX_PROCESSOR_NAME-namelen);
   int dest;
         
-if (rank==0) {
-  dest = (rand() % 10)+1;
-  std::cout << "> destination: " << dest << std::endl;
+  if (rank==0) {
+    dest = (rand() % 10)+1;
+    std::cout << "> destination: " << dest << std::endl;
       MPI_Send(&send_num, dest, MPI_INT, 1, 0, MPI_COMM_WORLD);
      std::cout << "> " <<node_name<<" sent " << send_num << "  to another node"<< std::endl;
-    }
-
-if (rank ==dest){
-    std::cout << "> destination: " << dest << std::endl;
+  }
+     std::cout << "> rank: " << rank << std::endl;
+  if (rank == dest){
+      std::cout << "> destination: " << dest << std::endl;
       MPI_Recv(&received, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,
                MPI_STATUS_IGNORE);
      std::cout << "> " << received << " received by "<< node_name<< std::endl;
