@@ -13,12 +13,13 @@ int rank,size, namelen;
   MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Get_processor_name(node_name, &namelen);
   memset(node_name+namelen,0,MPI_MAX_PROCESSOR_NAME-namelen);
-
+ dest = (rand() % 10)+1
 if (rank==0) {
-      MPI_Send(&send_num, 1, MPI_INT, 1, 0, MPI_COMM_WORLD);
+      MPI_Send(&send_num, dest, MPI_INT, 1, 0, MPI_COMM_WORLD);
      std::cout << "> " <<node_name<<" sent " << send_num << "  to next node in line"<< std::endl;
-    } 
-if (rank ==1){
+    }
+
+if (rank ==dest){
       MPI_Recv(&received, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,
                MPI_STATUS_IGNORE);
      std::cout << "> " << received << " received by "<< node_name<< std::endl;
