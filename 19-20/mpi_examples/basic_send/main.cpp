@@ -17,7 +17,7 @@ int rank,size, namelen;
   int src = 0; //atoi(argv[1]);
   if (rank == src) {   
     MPI_Send(&send_num, 1, MPI_INT, dest, 0, MPI_COMM_WORLD);
-    std::cout << "> " <<node_name<<" Sent " << send_num << "  To ... ? "<< std::endl;
+    std::cout << "> " <<node_name<<" Sent " << send_num << "  To  node"<< dest << std::endl;
   }
   if(rank == dest){
          std::cout << " hello from "<< node_name<< std::endl;
