@@ -5,6 +5,6 @@
 if [ "$1" == "" ]; then
     echo "Positional parameter 1 is empty"
 else
-mpirun -machinefile /etc/pdsh/machines  --map-by ppr:1:node $1 $2 $3
+mpirun -np 11 -hostfile /etc/pdsh/machines --map-by node $1 $2 $3
 
 fi
