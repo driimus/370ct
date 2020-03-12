@@ -13,8 +13,8 @@ int rank,size, namelen;
   MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Get_processor_name(node_name, &namelen);
   memset(node_name+namelen,0,MPI_MAX_PROCESSOR_NAME-namelen);
-  int dest = atoi(argv[2]);
-  int src = atoi(argv[1]);
+  int dest = 1;//atoi(argv[2]); // change to command line inputs again if you want to vary these
+  int src = 0; //atoi(argv[1]);
   if (rank == src) {   
     MPI_Send(&send_num, 1, MPI_INT, dest, 0, MPI_COMM_WORLD);
     std::cout << "> " <<node_name<<" Sent " << send_num << "  To ... ? "<< std::endl;
