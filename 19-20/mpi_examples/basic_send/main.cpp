@@ -13,16 +13,17 @@ int rank,size, namelen;
   MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Get_processor_name(node_name, &namelen);
   memset(node_name+namelen,0,MPI_MAX_PROCESSOR_NAME-namelen);
-
-if (rank==0) {
-      MPI_Send(&send_num, 1, MPI_INT, 1, 0, MPI_COMM_WORLD);
-     std::cout << "> " <<node_name<<" sent " << send_num << "  to next node in line"<< std::endl;
-    } 
-if (rank ==1){
-      MPI_Recv(&received, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,
-               MPI_STATUS_IGNORE);
-     std::cout << "> " << received << " received by "<< node_name<< std::endl;
-
+  int dest = 1;//atoi(argv[2]); // change to command line inputs again if you want to vary these
+  int src = 0; //atoi(argv[1]);
+  if (rank == src) {   
+    MPI_Send(&send_num, 1, MPI_INT, dest, 0, MPI_COMM_WORLD);
+    std::cout << "> " <<node_name<<" Sent " << send_num << "  To  node"<< dest << std::endl;
+  }
+  if(rank == dest){
+         std::cout << " hello from "<< node_name<< std::endl;
+     MPI_Recv(&received, 1, MPI_INT, src, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+     std::cout << "> Number: " << received << " Received by "<< node_name<< std::endl;
   }
   MPI_Finalize();
 }
+
