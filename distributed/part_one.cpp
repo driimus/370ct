@@ -6,18 +6,6 @@
 #include <cstdlib>
 #include <cstdio>
 
-void printSysInfo() {
-	// Determine physical memory size
-	long RAM = sysconf(_SC_PHYS_PAGES) * sysconf(_SC_PAGESIZE);
-
-	std::cout << "Physical core count: " << omp_get_num_procs() << std::endl;
-	system("cat /proc/cpuinfo | grep MHz");
-	std::cout << "RAM amount: " << RAM << '\n';
-
-	printf("Home directory size: "); fflush(stdout);
-	system("du -s /home 2>/dev/null");
-}
-
 auto main() -> int {
 	MPI_INIT(NULL, NULL);
 
