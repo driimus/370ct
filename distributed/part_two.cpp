@@ -29,7 +29,7 @@ auto jumbleWords(std::string& verse) -> std::string {
 
 	// Split verse into words.
 	std::vector<std::string> words;
-	while (ss >> temp) words.push_back(temp);
+	while (ss >> temp) words.push_back(temp + " ");
 	// Shuffle words around.
 	std::random_shuffle(words.begin(), words.end());
 
