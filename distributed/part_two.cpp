@@ -3,6 +3,23 @@
 #include "mpi.h"
 
 
+auto receiveLine() -> std::string {
+	MPI_Status status;
+	MPI_Probe(0, 0, MPI_COMM_WORLD, &status);
+
+	// Check for the length of the verse.
+	int len;
+	MPI_Get_count(&status, MPI_CHAR, &len);
+
+	// Store the verse in a buffer.
+	char temp[len];
+	MPI_Recv(&temp, len, MPI_CHAR, 0, 0, MPI_COMM_WORLD, &status);
+
+	// Return verse as a string.
+	std::string res = temp;
+	return res;
+}
+
 auto main() -> int {
 	MPI_Init(NULL, NULL);
 
@@ -12,31 +29,25 @@ auto main() -> int {
 	MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 	MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
-	std::vector<std::string> poem = getFileContents('to_the_rain.txt');
+	std::vector<std::string> poem = getFileContents("to_the_rain.txt");
 	std::string line;
+
 	if (world_rank == 0) {
 		for (int i = 0; i < poem.size(); ++i) {
-			MPI_Send(&poem[i].c_str(), poem[i].size(), MPI_CHAR, i+1, 0, MPI_COMM_WORLD);
-			std::cout << " Sent " << poem[i] << " to node " << i+1 << std::endl;
+			MPI_Send(&poem[i][0], poem[i].size()+1, MPI_CHAR, (i+1)/2, 0, MPI_COMM_WORLD);
+			// std::cout << " Sent " << poem[i] << " to node " << i+1 << std::endl;
 		}
 	} else {
-		std::cout << " hello from " << std::endl;
-		MPI_Recv(&line, 50, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+		std::string line = receiveLine();
 
 		// processing
 		std::cout << "> " << line << " Received" << std::endl;
-
-		// MPI_Send(&send_num, 1, MPI_INT, dest, 0, MPI_COMM_WORLD);
-		// std::cout << "> " << node_name << " Sent " << send_num << "  To  node" << dest << std::endl;
 		finished = true;
 	}
 
 	if (world_rank == 0 && finished) {
-		std::cout << " hello from src" << std::endl;
-		// MPI_Recv(&received, 1, MPI_INT, src, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
+		// std::cout << " hello from src" << std::endl;
 	}
-
 
 	MPI_Finalize();
 
