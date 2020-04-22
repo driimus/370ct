@@ -31,7 +31,7 @@ auto main() -> int {
 
 	std::vector<std::string> poem = getFileContents("to_the_rain.txt");
 	std::string line;
-	poem.resize(world_size-1);
+	poem.resize(world_size - 1);
 
 	if (world_rank == 0) {
 		for (int i = 0; i < poem.size(); ++i) {
