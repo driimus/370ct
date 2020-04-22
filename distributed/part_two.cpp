@@ -14,13 +14,13 @@ auto main() -> int {
 
 	std::vector<std::string> poem = getFileContents('to_the_rain.txt');
 	std::string line;
-	if (rank == 0) {
+	if (world_rank == 0) {
 		for (int i = 0; i < poem.size(); ++i) {
 			MPI_Send(&poem[i].c_str(), poem[i].size(), MPI_CHAR, i+1, 0, MPI_COMM_WORLD);
 			std::cout << " Sent " << poem[i] << " to node " << i+1 << std::endl;
 		}
 	} else {
-		std::cout << " hello from " << node_name << std::endl;
+		std::cout << " hello from " << std::endl;
 		MPI_Recv(&line, 50, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
 		// processing
@@ -31,7 +31,7 @@ auto main() -> int {
 		finished = true;
 	}
 
-	if (rank == 0 && finished) {
+	if (world_rank == 0 && finished) {
 		std::cout << " hello from src" << std::endl;
 		// MPI_Recv(&received, 1, MPI_INT, src, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
