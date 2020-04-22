@@ -59,7 +59,7 @@ auto main() -> int {
 		}
 	} else {
 		std::string line = receiveLine();
-		line = jumbledVerse(line);
+		line = jumbleWords(line);
 		// processing
 		std::cout << "> " << line << " Received" << std::endl;
 		finished = true;
