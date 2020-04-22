@@ -2,6 +2,9 @@
 #include "omp.h"
 #include "mpi.h"
 
+#include <sstream>
+#include <algorithm>
+
 
 auto receiveLine() -> std::string {
 	MPI_Status status;
@@ -18,6 +21,22 @@ auto receiveLine() -> std::string {
 	// Return verse as a string.
 	std::string res = temp;
 	return res;
+}
+
+auto jumbleWords(std::string& verse) -> std::string {
+	std::string temp;
+	std::stringstream ss(verse);
+
+	// Split verse into words.
+	std::vector<std::string> words;
+	while (ss >> temp) words.push_back(temp);
+	// Shuffle words around.
+	std::random_shuffle(words.begin(), words.end());
+
+	// Build jumbled verse and return it.
+	std::string jumbledVerse;
+	for (const auto &word : words) jumbledVerse += word;
+	return jumbledVerse;
 }
 
 auto main() -> int {
@@ -40,7 +59,7 @@ auto main() -> int {
 		}
 	} else {
 		std::string line = receiveLine();
-
+		line = jumbledVerse(line);
 		// processing
 		std::cout << "> " << line << " Received" << std::endl;
 		finished = true;
