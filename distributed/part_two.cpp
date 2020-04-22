@@ -31,10 +31,11 @@ auto main() -> int {
 
 	std::vector<std::string> poem = getFileContents("to_the_rain.txt");
 	std::string line;
+	poem.resize(world_size-1);
 
 	if (world_rank == 0) {
 		for (int i = 0; i < poem.size(); ++i) {
-			MPI_Send(&poem[i][0], poem[i].size()+1, MPI_CHAR, (i+1)/2, 0, MPI_COMM_WORLD);
+			MPI_Send(&poem[i][0], poem[i].size()+1, MPI_CHAR, i+1, 0, MPI_COMM_WORLD);
 			// std::cout << " Sent " << poem[i] << " to node " << i+1 << std::endl;
 		}
 	} else {
