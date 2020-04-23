@@ -68,7 +68,7 @@ auto main() -> int {
 				? getRandomInt(0, world_size - 2)
 				: prev + 1;
 			temp[world_rank - 1] = world_rank == world_size-1
-				? getRandomInt(0, world_size - 2)
+				? temp[getRandomInt(0, world_size - 2)]
 				: world_rank + 1;
 
 			for (int v:temp) std::cout<<v<<' ';
