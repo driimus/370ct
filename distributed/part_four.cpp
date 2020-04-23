@@ -33,7 +33,7 @@ auto main() -> int {
 		int to = getRandomInt(1, world_size - 1);
 
 		MPI_Send(&initial, 1, MPI_INT, to, 0, MPI_COMM_WORLD);
-		MPI_Recv(&initial, 1, MPI_INT, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, &status);
+		MPI_Recv(&initial, 1, MPI_INT, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 		std::cout << "Final result: " << initial << std::endl;
 	} else {
 		// Copy of node indices
