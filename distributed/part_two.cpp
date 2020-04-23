@@ -78,42 +78,39 @@ auto main() -> int {
 
 	// Part 3
 	int matches = 0;
-	for (int i = 1; i <= poem.size(); ++i) {
-		while (!finished) {
-			if (world_rank == i) {
-				// Send two random indices.
-				int temp[2] = {
-					getRandomInt(0, positions.size()-1),
-					getRandomInt(0, positions.size()-1)
-				};
-				while (temp[0] == temp[1]) temp[1] = getRandomInt(0, positions.size()-1);
+	while (!finished || matches < world_size-1) {
+		if (world_rank == matches+1) {
+			// Send two random indices.
+			int temp[2] = {
+				getRandomInt(0, positions.size()-1),
+				getRandomInt(0, positions.size()-1)
+			};
+			while (temp[0] == temp[1]) temp[1] = getRandomInt(0, positions.size()-1);
 
-				MPI_Send(&temp, 2, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
-				// std::cout<< temp[0] << temp[1] << '\t';
-			} else if (world_rank == 0) {
-				// receive indices
-				int temp[2];
-				MPI_Recv(&temp, 2, MPI_CHAR, i, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+			MPI_Send(&temp, 2, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
+			// std::cout<< temp[0] << temp[1] << '\t';
+		} else if (world_rank == 0) {
+			// receive indices
+			int temp[2];
+			MPI_Recv(&temp, 2, MPI_CHAR, matches+1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
-				// compare positions
-				bool match = abs(temp[0] - temp[1]) == 1;
-				// if (match) ++matches;
-				// std::cout<< matches <<std::endl;
+			// compare positions
+			bool match = abs(temp[0] - temp[1]) == 1;
+			if (match) ++matches;
+			std::cout<< matches <<std::endl;
 
-				// send result
-				MPI_Send(&match, 1, MPI_C_BOOL, i, 0, MPI_COMM_WORLD);
-				// if (matches == world_size-2) break;
-			}
-
-			if (world_rank == i) {
-
-				// Get result
-				MPI_Recv(&finished, 1, MPI_C_BOOL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
-				std::cout << finished << '\t' << world_rank << std::endl;
-			}
+			// send result
+			MPI_Send(&match, 1, MPI_C_BOOL, matches+1, 0, MPI_COMM_WORLD);
+			if (matches == world_size-1) break;
 		}
-		finished = false;
+
+		if (world_rank == matches+1) {
+
+			// Get result
+			MPI_Recv(&finished, 1, MPI_C_BOOL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+			std::cout << finished << '\t' << world_rank << std::endl;
+		}
 	}
 
 	MPI_Finalize();
