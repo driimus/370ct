@@ -90,6 +90,10 @@ auto main() -> int {
 
 				MPI_Send(&temp, 2, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
 
+				// Get result
+				MPI_Recv(&finished, 1, MPI_C_BOOL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+				std::cout << finished << '\t' << world_rank << std::endl;
 				// std::cout<< temp[0] << temp[1] << '\t';
 			} else if (world_rank == 0) {
 				// receive indices
@@ -103,14 +107,10 @@ auto main() -> int {
 				MPI_Send(&match, 1, MPI_C_BOOL, i, 0, MPI_COMM_WORLD);
 			}
 
-			if (world_rank == i) {
-				// Get result
-				MPI_Recv(&finished, 1, MPI_C_BOOL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
-				std::cout << finished << '\t' << world_rank << std::endl;
-			}
+			// if (world_rank == i) {
+			// }
 		}
-		finished = false;
+		// finished = false;
 	}
 
 	MPI_Finalize();
