@@ -77,7 +77,8 @@ auto main() -> int {
 	}
 
 	// Part 3
-	for (int i = 1; i <= poem.size(); ++i) {
+	int matches = 0;
+	for (int i = 1; i <= world_rank-1; ++i) {
 		std::cout<< i<<std::endl;
 		while (!finished) {
 			if (world_rank == i) {
@@ -102,9 +103,11 @@ auto main() -> int {
 
 				// compare positions
 				bool match = abs(temp[0] - temp[1]) == 1;
+				if (match) ++matches;
 
 				// send result
 				MPI_Send(&match, 1, MPI_C_BOOL, i, 0, MPI_COMM_WORLD);
+				if (matches == world_rank-1) break;
 			}
 
 			// if (world_rank == i) {
