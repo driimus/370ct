@@ -70,7 +70,7 @@ auto main() -> int {
 			while (!finished) {
 				// receive indices
 				int temp[2];
-				MPI_Recv(&temp, 2, MPI_CHAR, i+1, 0, MPI_COMM_WORLD);
+				MPI_Recv(&temp, 2, MPI_CHAR, i+1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
 				// compare positions
 				finished = abs(temp[0] - temp[1]) == 1;
@@ -98,7 +98,7 @@ auto main() -> int {
 			MPI_Send(&temp, 2, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
 
 			// Get result
-			MPI_Recv(&finished, 1, MPI_C_BOOL, 0, 0, MPI_COMM_WORLD);
+			MPI_Recv(&finished, 1, MPI_C_BOOL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 		}
 	}
 
