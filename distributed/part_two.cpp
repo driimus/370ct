@@ -96,11 +96,11 @@ auto main() -> int {
 
 			// compare positions
 			bool match = abs(temp[0] - temp[1]) == 1;
-			if (match) ++matches;
 			std::cout<< matches <<std::endl;
 
 			// send result
 			MPI_Send(&match, 1, MPI_C_BOOL, matches+1, 0, MPI_COMM_WORLD);
+			if (match) ++matches;
 			if (matches == world_size-1) break;
 		}
 
