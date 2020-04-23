@@ -50,16 +50,16 @@ auto jumbleWords(std::string& verse) -> std::vector<int> {
 	return positions;
 }
 
-void print(std::string& verse, int i) {
+void printWord(std::string& verse, int i) {
 	for (; i<verse.size() && verse[i] != ' '; ++i) std::cout<<verse[i];
 }
 void printWords(std::string& verse, int x, int y) {
 	if (x > y) { x += y; y = x - y; x -= y;}
 	for (int i=0; i<verse.size(); ++i)
+		if (!x) { printWord(verse, i); std::cout << " and "; }
+		if (!y) printWord(verse, i);
 		if (verse[i] == ' ' || i == verse.size()-1) {
 			--x; --y;
-			if (!x) { print(verse, i); std::cout << " and "; }
-			if (!y) print(verse, i);
 		}
 }
 
