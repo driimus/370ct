@@ -105,17 +105,7 @@ auto main() -> int {
 	// Part 3
 	for (int i = 0; i < poem.size(); ++i) {
 		while (!finished) {
-			if (world_rank == 0) {
-				// receive indices
-				int temp[2];
-				MPI_Recv(&temp, 2, MPI_CHAR, i+1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
-				// compare positions
-				finished = abs(temp[0] - temp[1]) == 1;
-
-				// send result
-				MPI_Send(&finished, 1, MPI_C_BOOL, i+1, 0, MPI_COMM_WORLD);
-			} else {
+			if (world_rank != 0) {
 				// Send two random indices.
 				int temp[2] = {
 					getRandomInt(0, positions.size()-1),
@@ -126,6 +116,16 @@ auto main() -> int {
 				std::cout<< temp[0] << temp[1] << '\t';
 				// Get result
 				MPI_Recv(&finished, 1, MPI_C_BOOL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+			} else {
+				// receive indices
+				int temp[2];
+				MPI_Recv(&temp, 2, MPI_CHAR, i+1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+				// compare positions
+				finished = abs(temp[0] - temp[1]) == 1;
+
+				// send result
+				MPI_Send(&finished, 1, MPI_C_BOOL, i+1, 0, MPI_COMM_WORLD);
 			}
 		}
 		finished = false;
