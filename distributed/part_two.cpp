@@ -59,6 +59,7 @@ auto main() -> int {
 	MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 	MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
+	std::string line;
 	std::vector<int> positions;
 	std::vector<std::string> poem = getFileContents("to_the_rain.txt");
 	poem.resize(world_size - 1);
@@ -69,7 +70,7 @@ auto main() -> int {
 		}
 	}
 	else {
-		std::string line = receiveLine();
+		line = receiveLine();
 		positions = jumbleWords(line);
 
 		std::cout << "> " << line << " Received" << std::endl;
@@ -77,9 +78,6 @@ auto main() -> int {
 
 	// Part 3
 	for (int i = 0; i < poem.size(); ++i) {
-
-		std::cout<<"test"<<i<<std::endl;
-
 		while (!finished) {
 			if (world_rank != 0) {
 				// Send two random indices.
@@ -87,13 +85,11 @@ auto main() -> int {
 					getRandomInt(0, positions.size()-1),
 					getRandomInt(0, positions.size()-1)
 				};
-
-				std::cout<< temp[0] << temp[1] << '\t';
-
 				while (temp[0] == temp[1]) temp[1] = getRandomInt(0, positions.size()-1);
+
 				MPI_Send(&temp, 2, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
 
-				std::cout<< temp[0] << temp[1] << '\t';
+				// std::cout<< temp[0] << temp[1] << '\t';
 			} else {
 				// receive indices
 				int temp[2];
@@ -109,6 +105,8 @@ auto main() -> int {
 			if (world_rank != 0) {
 				// Get result
 				MPI_Recv(&finished, 1, MPI_C_BOOL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+				std::cout << finished << '\t' << world_rank << std::endl;
 			}
 		}
 		finished = false;
