@@ -72,7 +72,7 @@ auto main() -> int {
 				: world_rank + 1;
 
 			for (int v:temp) std::cout<<v<<' ';
-			std::cout<<' '<<world_rank<<std::endl;
+			std::cout<<' '<<world_rank<<prev<<std::endl;
 
 			// If enough iterations have passed.
 			if (data[2] == 0) {
