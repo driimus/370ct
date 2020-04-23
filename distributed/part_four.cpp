@@ -85,7 +85,7 @@ auto main() -> int {
 				int to = getRandomInt(0, world_size - 1);
 				std::cout << "Node " << world_rank << ": " << data[0]
 									<< ". From " << prev
-									<< ", passing to node " << to << std::endl;
+									<< ", passing to node " << temp[to] << std::endl;
 				MPI_Send(&data, 3, MPI_INT, temp[to], 0, MPI_COMM_WORLD);
 			}
 		}
