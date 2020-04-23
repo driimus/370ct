@@ -102,12 +102,12 @@ auto main() -> int {
 
 				// compare positions
 				bool match = abs(temp[0] - temp[1]) == 1;
-				if (match) ++matches;
+				// if (match) ++matches;
 				std::cout<< matches <<std::endl;
 
 				// send result
 				MPI_Send(&match, 1, MPI_C_BOOL, i, 0, MPI_COMM_WORLD);
-				if (matches == world_size-2) break;
+				// if (matches == world_size-2) break;
 			}
 
 			// if (world_rank == i) {
