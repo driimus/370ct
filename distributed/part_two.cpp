@@ -106,7 +106,7 @@ auto main() -> int {
 			// send result
 			MPI_Send(&match, 1, MPI_C_BOOL, matches+1, 0, MPI_COMM_WORLD);
 			if (match) ++matches;
-			if (matches == world_size-1) break;
+			if (matches == world_size) break;
 		}
 
 		if (world_rank != 0) {
