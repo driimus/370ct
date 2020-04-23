@@ -79,7 +79,6 @@ auto main() -> int {
 	// Part 3
 	int matches = 0;
 	for (int i = 1; i <= world_rank-1; ++i) {
-		std::cout<< i<<std::endl;
 		while (!finished) {
 			if (world_rank == i) {
 				// Send two random indices.
@@ -104,6 +103,7 @@ auto main() -> int {
 				// compare positions
 				bool match = abs(temp[0] - temp[1]) == 1;
 				if (match) ++matches;
+				std::cout<< matches <<std::endl;
 
 				// send result
 				MPI_Send(&match, 1, MPI_C_BOOL, i, 0, MPI_COMM_WORLD);
