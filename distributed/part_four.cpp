@@ -36,7 +36,7 @@ auto main() -> int {
 		MPI_Recv(&initial, 1, MPI_INT, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 		std::cout << "Final result: " << initial << std::endl;
 	} else {
-		while() {
+		while(true) {
 			// Copy of node indices
 			std::vector<int> temp(nodes);
 
