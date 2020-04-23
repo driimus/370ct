@@ -82,7 +82,7 @@ auto main() -> int {
 				break;
 			} else {
 				// Send to a random next node.
-				int to = getRandomInt(0, world_size - 1);
+				int to = getRandomInt(0, world_size - 2);
 				std::cout << "Node " << world_rank << ": " << data[0]
 									<< ". From " << prev
 									<< ", passing to node " << temp[to] << std::endl;
