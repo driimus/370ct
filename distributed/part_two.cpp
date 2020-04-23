@@ -97,10 +97,10 @@ auto main() -> int {
 
 			// compare positions
 			finished = abs(temp[0] - temp[1]) == 1;
-			if (finished == true) ++matches;
 
 			// send result
 			MPI_Send(&finished, 1, MPI_C_BOOL, matches+1, 0, MPI_COMM_WORLD);
+			if (finished == true) ++matches;
 		}
 
 		if (world_rank != 0) {
