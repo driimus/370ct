@@ -68,19 +68,30 @@ auto main() -> int {
 		for (int i = 0; i < poem.size(); ++i) {
 			MPI_Send(&poem[i][0], poem[i].size()+1, MPI_CHAR, i+1, 0, MPI_COMM_WORLD);
 		}
+		int matches = 0;
+		while (matches < world_size-1) {
+			// receive indices
+			int temp[2];
+			MPI_Recv(&temp, 2, MPI_CHAR, matches+1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+			// compare positions
+			bool match = abs(temp[0] - temp[1]) == 1;
+			std::cout << poem[matches][temp[0]] << " and "
+								<< poem[matches][temp[0]] << " are "
+								<< match ? "" : "not " <<  "adjacent." << std::endl;
+
+			// send result
+			MPI_Send(&match, 1, MPI_C_BOOL, matches+1, 0, MPI_COMM_WORLD);
+			if (match) ++matches;
+		}
 	}
 	else {
 		line = receiveLine();
 		positions = jumbleWords(line);
 
 		std::cout << "> " << line << " Received" << std::endl;
-	}
 
-	// Part 3
-	int matches = 0;
-	while (!finished && matches < world_size-1) {
-
-		if (world_rank != 0) {
+		while (!finished) {
 			// Send two random indices.
 			int temp[2] = {
 				getRandomInt(0, positions.size()-1),
@@ -89,29 +100,47 @@ auto main() -> int {
 			while (temp[0] == temp[1]) temp[1] = getRandomInt(0, positions.size()-1);
 
 			MPI_Send(&temp, 2, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
-			// std::cout<< temp[0] << temp[1] << '\t';
+			std::cout << "node" << world_rank
+								<< " words at: " << temp[0] <<  ' ' << temp[1]
+								<< '\n';
 			// Get result
 			MPI_Recv(&finished, 1, MPI_C_BOOL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 		}
-
-		else if (world_rank == 0) {
-			// receive indices
-			int temp[2];
-			MPI_Recv(&temp, 2, MPI_CHAR, matches+1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
-			// compare positions
-			bool match = abs(temp[0] - temp[1]) == 1;
-			std::cout<< matches <<std::endl;
-
-			// send result
-			MPI_Send(&match, 1, MPI_C_BOOL, matches+1, 0, MPI_COMM_WORLD);
-			if (match) ++matches;
-		}
-
-		if (world_rank != 0) {
-		}
-
 	}
+
+	// Part 3
+	// int matches = 0;
+	// while (!finished && matches < world_size-1) {
+
+	// 	if (world_rank != 0) {
+	// 		// Send two random indices.
+	// 		int temp[2] = {
+	// 			getRandomInt(0, positions.size()-1),
+	// 			getRandomInt(0, positions.size()-1)
+	// 		};
+	// 		while (temp[0] == temp[1]) temp[1] = getRandomInt(0, positions.size()-1);
+
+	// 		MPI_Send(&temp, 2, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
+	// 		std::cout<< "node" << world_rank << ": " temp[0] << temp[1] << '\n';
+	// 		// Get result
+	// 		MPI_Recv(&finished, 1, MPI_C_BOOL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+	// 	}
+
+	// 	else if (world_rank == 0) {
+	// 		// receive indices
+	// 		int temp[2];
+	// 		MPI_Recv(&temp, 2, MPI_CHAR, matches+1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+	// 		// compare positions
+	// 		bool match = abs(temp[0] - temp[1]) == 1;
+	// 		std::cout<< matches <<std::endl;
+
+	// 		// send result
+	// 		MPI_Send(&match, 1, MPI_C_BOOL, matches+1, 0, MPI_COMM_WORLD);
+	// 		if (match) ++matches;
+	// 	}
+
+	// }
 
 	MPI_Finalize();
 
