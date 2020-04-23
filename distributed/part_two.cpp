@@ -91,7 +91,7 @@ auto main() -> int {
 				MPI_Send(&temp, 2, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
 
 				// std::cout<< temp[0] << temp[1] << '\t';
-			} else {
+			} else if (world_rank == 0) {
 				// receive indices
 				int temp[2];
 				MPI_Recv(&temp, 2, MPI_CHAR, i, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
@@ -103,7 +103,7 @@ auto main() -> int {
 				MPI_Send(&match, 1, MPI_C_BOOL, i, 0, MPI_COMM_WORLD);
 			}
 
-			if (world_rank != 0) {
+			if (world_rank == i) {
 				// Get result
 				MPI_Recv(&finished, 1, MPI_C_BOOL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
