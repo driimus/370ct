@@ -78,7 +78,7 @@ auto main() -> int {
 
 	// Part 3
 	int matches = 0;
-	while (!finished && matches < world_size-1) {
+	while (!finished && matches < world_size) {
 
 		if (world_rank != 0) {
 			// Send two random indices.
@@ -106,7 +106,6 @@ auto main() -> int {
 			// send result
 			MPI_Send(&match, 1, MPI_C_BOOL, matches+1, 0, MPI_COMM_WORLD);
 			if (match) ++matches;
-			if (matches == world_size) break;
 		}
 
 		if (world_rank != 0) {
