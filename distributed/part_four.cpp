@@ -67,9 +67,6 @@ auto main() -> int {
 			temp[status.MPI_SOURCE - 1] = 0;
 			temp[world_rank - 1] = 0;
 
-			for (int v:temp) std::cout<<v<<' ';
-			std::cout<<' '<<world_rank<<status.MPI_SOURCE<<std::endl;
-
 			// If enough iterations have passed.
 			if (data[2] == 0) {
 				std::cout << "Final: " << data[0] << std::endl;
