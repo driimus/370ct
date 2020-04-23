@@ -50,6 +50,12 @@ auto jumbleWords(std::string& verse) -> std::vector<int> {
 	return positions;
 }
 
+void printWords(std::string& verse, int i, int j) {
+	for (; i<verse.size() && verse[i] != ' '; ++i) std::cout<<verse[i];
+	std::cout << " and ";
+	for (; j<verse.size() && verse[j] != ' '; ++j) std::cout<<verse[j];
+}
+
 auto main() -> int {
 	MPI_Init(NULL, NULL);
 
@@ -76,8 +82,7 @@ auto main() -> int {
 
 			// compare positions
 			bool match = abs(temp[0] - temp[1]) == 1;
-			std::cout << poem[matches][temp[0]] << " and "
-								<< poem[matches][temp[0]] << " are "
+			std::cout << printWords(poem[matches], temp[0], temp[1]) << " are "
 								<< (match ? "" : "not ") <<  "adjacent." << std::endl;
 
 			// send result
