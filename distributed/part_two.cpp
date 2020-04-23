@@ -77,40 +77,38 @@ auto main() -> int {
 	}
 
 	// Part 3
-	for (int i = 0; i < poem.size(); ++i) {
-		std::cout<< i<<std::endl;
-		while (!finished) {
-			if (world_rank != 0) {
-				// Send two random indices.
-				int temp[2] = {
-					getRandomInt(0, positions.size()-1),
-					getRandomInt(0, positions.size()-1)
-				};
-				while (temp[0] == temp[1]) temp[1] = getRandomInt(0, positions.size()-1);
+	int matches = 0;
+	while (!finished || matches < world_size-1) {
+		if (world_rank != 0) {
+			// Send two random indices.
+			int temp[2] = {
+				getRandomInt(0, positions.size()-1),
+				getRandomInt(0, positions.size()-1)
+			};
+			while (temp[0] == temp[1]) temp[1] = getRandomInt(0, positions.size()-1);
 
-				MPI_Send(&temp, 2, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
+			MPI_Send(&temp, 2, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
 
-				// std::cout<< temp[0] << temp[1] << '\t';
-			} else {
-				// receive indices
-				int temp[2];
-				MPI_Recv(&temp, 2, MPI_CHAR, i+1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+			// std::cout<< temp[0] << temp[1] << '\t';
+		} else {
+			// receive indices
+			int temp[2];
+			MPI_Recv(&temp, 2, MPI_CHAR, i+1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
-				// compare positions
-				finished = abs(temp[0] - temp[1]) == 1;
+			// compare positions
+			finished = abs(temp[0] - temp[1]) == 1;
+			if (finished == true) ++matches;
 
-				// send result
-				MPI_Send(&finished, 1, MPI_C_BOOL, i+1, 0, MPI_COMM_WORLD);
-			}
-
-			if (world_rank != 0) {
-				// Get result
-				MPI_Recv(&finished, 1, MPI_C_BOOL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
-				std::cout << finished << '\t' << world_rank << std::endl;
-			}
+			// send result
+			MPI_Send(&finished, 1, MPI_C_BOOL, i+1, 0, MPI_COMM_WORLD);
 		}
-		finished = false;
+
+		if (world_rank != 0) {
+			// Get result
+			MPI_Recv(&finished, 1, MPI_C_BOOL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+			std::cout << finished << '\t' << world_rank << std::endl;
+		}
 	}
 
 	MPI_Finalize();
