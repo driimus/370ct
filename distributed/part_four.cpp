@@ -2,6 +2,7 @@
 #include "mpi.h"
 
 #include <random>
+#include <algorithm>
 
 
 auto getRandomInt(int from, int to) -> int {
@@ -67,7 +68,7 @@ auto main() -> int {
 			temp[world_rank - 1] = 0;
 
 			for (int v:temp) std::cout<<v<<' ';
-			std::cout<<' '<<world_rank<<prev<<std::endl;
+			std::cout<<' '<<world_rank<<status.MPI_SOURCE<<std::endl;
 
 			// If enough iterations have passed.
 			if (data[2] == 0) {
@@ -84,9 +85,9 @@ auto main() -> int {
 				std::random_shuffle(temp.begin(), temp.end());
 				int to = 0;
 				for (int v:temp) if (v) {to = v; break;}
-				// std::cout << "Node " << world_rank << ": " << data[0]
-				          // << ". From " << prev
-				          // << ", passing to node " << temp[to] << std::endl;
+				std::cout << "Node " << world_rank << ": " << data[0]
+				          << ". From " << prev
+				          << ", passing to node " << temp[to] << std::endl;
 				MPI_Send(&data, 3, MPI_INT, temp[to], 0, MPI_COMM_WORLD);
 			}
 		}
