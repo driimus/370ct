@@ -78,7 +78,7 @@ auto main() -> int {
 
 	// Part 3
 	int matches = 0;
-	while (!finished && matches < world_size) {
+	while (!finished && matches < world_size-1) {
 
 		if (world_rank != 0) {
 			// Send two random indices.
