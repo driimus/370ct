@@ -60,7 +60,6 @@ auto main() -> int {
 			data[1] = (data[1]+1) % 4;
 			--data[2];
 
-			std::cout << "Node " << world_rank << ": " << data[0] << std::endl;
 
 			// Copy of node indices
 			std::vector<int> temp(nodes);
@@ -84,6 +83,9 @@ auto main() -> int {
 			} else {
 				// Send to a random next node.
 				int to = getRandomInt(0, world_size - 1);
+				std::cout << "Node " << world_rank << ": " << data[0]
+									<< ". From " << prev
+									<< ", passing to node " << to << std::endl;
 				MPI_Send(&data, 3, MPI_INT, temp[to], 0, MPI_COMM_WORLD);
 			}
 		}
