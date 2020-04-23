@@ -97,10 +97,10 @@ auto main() -> int {
 				MPI_Recv(&temp, 2, MPI_CHAR, i, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
 				// compare positions
-				bool temp = abs(temp[0] - temp[1]) == 1;
+				bool match = abs(temp[0] - temp[1]) == 1;
 
 				// send result
-				MPI_Send(&temp, 1, MPI_C_BOOL, i, 0, MPI_COMM_WORLD);
+				MPI_Send(&match, 1, MPI_C_BOOL, i, 0, MPI_COMM_WORLD);
 			}
 
 			if (world_rank != 0) {
