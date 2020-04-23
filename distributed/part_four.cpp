@@ -67,10 +67,10 @@ auto main() -> int {
 			int prev = status.MPI_SOURCE;
 			if (prev) temp[prev-1] = prev == temp.size()
 														 ? getRandomInt(0, world_size-2)
-														 : prev;
+														 : prev + 1;
 			temp[world_rank-1] = world_rank == temp.size()
 												 ? getRandomInt(0, world_size-2)
-												 : world_rank;
+												 : world_rank + 1;
 			std::cout<< world_rank << temp[prev-1] << temp[world_rank-1] << '\n';
 
 			if (data[2] == 0) {
