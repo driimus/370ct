@@ -45,7 +45,7 @@ auto main() -> int {
 	};
 
 	if (world_rank == 0) {
-		std::cout << "Initial: " << initial << std::endl;
+		std::cout << "Initial: " << data[0] << std::endl;
 		int to = getRandomInt(1, world_size - 1);
 
 		MPI_Send(&data, 3, MPI_INT, to, 0, MPI_COMM_WORLD);
@@ -75,6 +75,7 @@ auto main() -> int {
 
 			if (data[2] == 0) {
 				// Finish up.
+				std::cout << "Final: " << data[0] << std::endl;
 				for (int i=1; i<world_size; ++i) {
 					if (i == world_rank) continue;
 					MPI_Send(&data, 3, MPI_INT, i, 0, MPI_COMM_WORLD);
