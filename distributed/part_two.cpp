@@ -55,12 +55,13 @@ void printWord(std::string& verse, int i) {
 }
 void printWords(std::string& verse, int x, int y) {
 	if (x > y) { x += y; y = x - y; x -= y;}
-	for (int i=0; i<verse.size(); ++i)
+	for (int i=0; i<verse.size(); ++i) {
 		if (!x) { printWord(verse, i); std::cout << " and "; }
 		if (!y) printWord(verse, i);
 		if (verse[i] == ' ' || i == verse.size()-1) {
 			--x; --y;
 		}
+	}
 }
 
 auto main() -> int {
