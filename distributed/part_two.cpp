@@ -77,6 +77,9 @@ auto main() -> int {
 
 	// Part 3
 	for (int i = 0; i < poem.size(); ++i) {
+
+		std::cout<<"test"<<i<<st::endl;
+
 		while (!finished) {
 			if (world_rank != 0) {
 				// Send two random indices.
@@ -84,11 +87,13 @@ auto main() -> int {
 					getRandomInt(0, positions.size()-1),
 					getRandomInt(0, positions.size()-1)
 				};
+
+				std::cout<< temp[0] << temp[1] << '\t';
+
 				while (temp[0] == temp[1]) temp[1] = getRandomInt(0, positions.size()-1);
 				MPI_Send(&temp, 2, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
+
 				std::cout<< temp[0] << temp[1] << '\t';
-				// Get result
-				MPI_Recv(&finished, 1, MPI_C_BOOL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 			} else {
 				// receive indices
 				int temp[2];
@@ -99,6 +104,11 @@ auto main() -> int {
 
 				// send result
 				MPI_Send(&finished, 1, MPI_C_BOOL, i+1, 0, MPI_COMM_WORLD);
+			}
+
+			if (world_rank != 0) {
+				// Get result
+				MPI_Recv(&finished, 1, MPI_C_BOOL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 			}
 		}
 		finished = false;
