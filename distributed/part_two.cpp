@@ -78,7 +78,7 @@ auto main() -> int {
 	// Part 3
 	for (int i = 0; i < poem.size(); ++i) {
 
-		std::cout<<"test"<<i<<st::endl;
+		std::cout<<"test"<<i<<std::endl;
 
 		while (!finished) {
 			if (world_rank != 0) {
