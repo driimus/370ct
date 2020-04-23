@@ -93,14 +93,14 @@ auto main() -> int {
 		} else {
 			// receive indices
 			int temp[2];
-			MPI_Recv(&temp, 2, MPI_CHAR, i+1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+			MPI_Recv(&temp, 2, MPI_CHAR, matches+1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
 			// compare positions
 			finished = abs(temp[0] - temp[1]) == 1;
 			if (finished == true) ++matches;
 
 			// send result
-			MPI_Send(&finished, 1, MPI_C_BOOL, i+1, 0, MPI_COMM_WORLD);
+			MPI_Send(&finished, 1, MPI_C_BOOL, matches+1, 0, MPI_COMM_WORLD);
 		}
 
 		if (world_rank != 0) {
