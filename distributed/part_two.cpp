@@ -4,7 +4,14 @@
 
 #include <sstream>
 #include <algorithm>
+#include <random>
 
+
+auto getRandomInt(int from, int to) -> int {
+	std::uniform_int_distribution<int> range{from, to};
+	std::random_device rnd;
+	return range(rnd);
+}
 
 auto receiveLine() -> std::string {
 	MPI_Status status;
@@ -23,20 +30,24 @@ auto receiveLine() -> std::string {
 	return res;
 }
 
-auto jumbleWords(std::string& verse) -> std::string {
+auto jumbleWords(std::string& verse) -> std::vector<int> {
 	std::string temp;
 	std::stringstream ss(verse);
 
 	// Split verse into words.
 	std::vector<std::string> words;
 	while (ss >> temp) words.push_back(temp + " ");
+
 	// Shuffle words around.
-	std::random_shuffle(words.begin(), words.end());
+	std::vector<int> positions;
+	for (int i=0; i<words.size(); ++i) positions.push_back(i);
+	std::random_shuffle(positions.begin(), positions.end());
 
 	// Build jumbled verse and return it.
 	std::string jumbledVerse;
-	for (const auto &word : words) jumbledVerse += word;
-	return jumbledVerse;
+	for (int pos : positions) jumbledVerse += words[pos] + ' ';
+	verse = jumbledVerse;
+	return positions;
 }
 
 auto main() -> int {
@@ -55,14 +66,40 @@ auto main() -> int {
 	if (world_rank == 0) {
 		for (int i = 0; i < poem.size(); ++i) {
 			MPI_Send(&poem[i][0], poem[i].size()+1, MPI_CHAR, i+1, 0, MPI_COMM_WORLD);
-			// std::cout << " Sent " << poem[i] << " to node " << i+1 << std::endl;
+
+			while (!finished) {
+				// receive indices
+				int temp[2];
+				MPI_Recv(&temp, 2, MPI_CHAR, i+1, 0, MPI_COMM_WORLD);
+
+				// compare positions
+				finished = abs(temp[0] - temp[1]) == 1;
+
+				// send result
+				MPI_Send(&finished, 1, MPI_C_BOOL, i+1, 0, MPI_COMM_WORLD);
+			}
+
+			finished = false;
 		}
-	} else {
+	}
+	else {
 		std::string line = receiveLine();
-		line = jumbleWords(line);
-		// processing
+		std::vector<int> positions = jumbleWords(line);
+
 		std::cout << "> " << line << " Received" << std::endl;
-		finished = true;
+
+		while (!finished) {
+			// Send two random indices.
+			int temp[2] = {
+				getRandomInt(0, positions.size()-1),
+				getRandomInt(0, positions.size()-1)
+			};
+			while (temp[0] == temp[1]) temp[1] = getRandomInt(0, positions.size()-1);
+			MPI_Send(&temp, 2, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
+
+			// Get result
+			MPI_Recv(&finished, 1, MPI_C_BOOL, 0, 0, MPI_COMM_WORLD);
+		}
 	}
 
 	if (world_rank == 0 && finished) {
