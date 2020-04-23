@@ -57,7 +57,7 @@ void printWords(std::string& verse, int x, int y) {
 	if (x > y) swap(x, y);
 	for (int i=0; i<verse.size(); ++i)
 		if (verse[i] == ' ' || i == verse.size()-1) {
-			if (!--x) { print(verse, i); std::cout << " and ";
+			if (!--x) { print(verse, i); std::cout << " and "; }
 			if (!--y) print(verse, i);
 		}
 }
