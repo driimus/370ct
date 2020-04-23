@@ -63,13 +63,8 @@ auto main() -> int {
 			// Copy of node indices
 			std::vector<int> temp(nodes);
 			// Flag previous and current nodes as visited.
-			int prev = status.MPI_SOURCE;
-			if (prev) temp[prev - 1] = prev == world_size-1
-				? getRandomInt(0, world_size - 2)
-				: prev + 1;
-			temp[world_rank - 1] = world_rank == world_size-1
-				? temp[getRandomInt(0, world_size - 2)]
-				: world_rank + 1;
+			temp[status.MPI_SOURCE - 1] = 0;
+			temp[world_rank - 1] = 0;
 
 			for (int v:temp) std::cout<<v<<' ';
 			std::cout<<' '<<world_rank<<prev<<std::endl;
@@ -86,7 +81,9 @@ auto main() -> int {
 				break;
 			} else {
 				// Send to a random next node.
-				int to = getRandomInt(0, world_size - 2);
+				std::random_shuffle(temp.begin(), temp.end());
+				int to = 0;
+				for (int v:temp) if (v) {to = v; break;}
 				// std::cout << "Node " << world_rank << ": " << data[0]
 				          // << ". From " << prev
 				          // << ", passing to node " << temp[to] << std::endl;
