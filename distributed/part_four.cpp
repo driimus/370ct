@@ -86,7 +86,7 @@ auto main() -> int {
 				int to = 0;
 				for (int v:temp) if (v) {to = v; break;}
 				std::cout << "Node " << world_rank << ": " << data[0]
-				          << ". From " << prev
+				          << ". From " << status.MPI_SOURCE
 				          << ", passing to node " << temp[to] << std::endl;
 				MPI_Send(&data, 3, MPI_INT, temp[to], 0, MPI_COMM_WORLD);
 			}
