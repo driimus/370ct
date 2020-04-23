@@ -78,7 +78,7 @@ auto main() -> int {
 			bool match = abs(temp[0] - temp[1]) == 1;
 			std::cout << poem[matches][temp[0]] << " and "
 								<< poem[matches][temp[0]] << " are "
-								<< match ? "" : "not " <<  "adjacent." << std::endl;
+								<< (match ? "" : "not ") <<  "adjacent." << std::endl;
 
 			// send result
 			MPI_Send(&match, 1, MPI_C_BOOL, matches+1, 0, MPI_COMM_WORLD);
