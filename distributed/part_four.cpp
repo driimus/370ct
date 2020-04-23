@@ -71,6 +71,7 @@ auto main() -> int {
 			temp[world_rank-1] = world_rank == temp.size()
 												 ? getRandomInt(0, world_size-2)
 												 : world_rank;
+			std::cout<< world_rank << temp[prev-1] << temp[world_rank-1] << '\n';
 
 			if (data[2] == 0) {
 				// Finish up.
