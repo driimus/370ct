@@ -10,8 +10,8 @@ auto getRandomInt(int from, int to) -> int {
 	return range(rnd);
 }
 
-auto calculate(int num, int operator) -> int {
-	switch(operator) {
+auto calculate(int num, int op) -> int {
+	switch(op) {
 		case 0:
 			num += getRandomInt(15, 60);
 			break;
