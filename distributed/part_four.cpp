@@ -65,12 +65,12 @@ auto main() -> int {
 			std::vector<int> temp(nodes);
 			// Flag previous and current nodes as visited.
 			int prev = status.MPI_SOURCE;
-			temp[prev] = prev == world_size-1
-									? getRandomInt(0, world_size-2)
-									: prev == 0 ? prev : prev + 1;
-			temp[world_rank] = world_rank == world_size-1
-												? getRandomInt(0, world_size-2)
-												: world_rank + 1;
+			if (prev) temp[prev-1] = prev == temp.size()
+														 ? getRandomInt(0, world_size-2)
+														 : prev;
+			temp[world_rank-1] = world_rank == temp.size()
+												 ? getRandomInt(0, world_size-2)
+												 : world_rank;
 
 			if (data[2] == 0) {
 				// Finish up.
