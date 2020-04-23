@@ -66,20 +66,6 @@ auto main() -> int {
 	if (world_rank == 0) {
 		for (int i = 0; i < poem.size(); ++i) {
 			MPI_Send(&poem[i][0], poem[i].size()+1, MPI_CHAR, i+1, 0, MPI_COMM_WORLD);
-
-			while (!finished) {
-				// receive indices
-				int temp[2];
-				MPI_Recv(&temp, 2, MPI_CHAR, i+1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
-				// compare positions
-				finished = abs(temp[0] - temp[1]) == 1;
-
-				// send result
-				MPI_Send(&finished, 1, MPI_C_BOOL, i+1, 0, MPI_COMM_WORLD);
-			}
-
-			finished = false;
 		}
 	}
 	else {
@@ -87,19 +73,6 @@ auto main() -> int {
 		positions = jumbleWords(line);
 
 		std::cout << "> " << line << " Received" << std::endl;
-
-		while (!finished) {
-			// Send two random indices.
-			int temp[2] = {
-				getRandomInt(0, positions.size()-1),
-				getRandomInt(0, positions.size()-1)
-			};
-			while (temp[0] == temp[1]) temp[1] = getRandomInt(0, positions.size()-1);
-			MPI_Send(&temp, 2, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
-
-			// Get result
-			MPI_Recv(&finished, 1, MPI_C_BOOL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-		}
 	}
 
 	// Part 3
