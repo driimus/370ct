@@ -10,12 +10,12 @@ auto getRandomInt(int from, int to) -> int {
 	return range(rnd);
 }
 
-enum operations : int {
-	add = 0,
-	sub,
-	mul,
-	div
-}
+// enum operations : int {
+// 	ADD = 0,
+// 	SUB,
+// 	mul,
+// 	div
+// }
 
 auto main() -> int {
 	MPI_Init(NULL, NULL);
