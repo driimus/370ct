@@ -67,7 +67,7 @@ auto main() -> int {
 			int prev = status.MPI_SOURCE;
 			temp[prev] = prev == world_size-1
 									? getRandomInt(0, world_size-2)
-									: prev + 1;
+									: prev == 0 ? prev : prev + 1;
 			temp[world_rank] = world_rank == world_size-1
 												? getRandomInt(0, world_size-2)
 												: world_rank + 1;
