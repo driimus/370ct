@@ -78,7 +78,7 @@ auto main() -> int {
 
 	// Part 3
 	int matches = 0;
-	for (int i = 1; i <= world_size-1; ++i) {
+	for (int i = 1; i <= poem.size(); ++i) {
 		while (!finished) {
 			if (world_rank == i) {
 				// Send two random indices.
