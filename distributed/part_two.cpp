@@ -89,11 +89,6 @@ auto main() -> int {
 				while (temp[0] == temp[1]) temp[1] = getRandomInt(0, positions.size()-1);
 
 				MPI_Send(&temp, 2, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
-
-				// Get result
-				MPI_Recv(&finished, 1, MPI_C_BOOL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
-				std::cout << finished << '\t' << world_rank << std::endl;
 				// std::cout<< temp[0] << temp[1] << '\t';
 			} else if (world_rank == 0) {
 				// receive indices
@@ -110,10 +105,15 @@ auto main() -> int {
 				// if (matches == world_size-2) break;
 			}
 
-			// if (world_rank == i) {
-			// }
+			if (world_rank == i) {
+
+				// Get result
+				MPI_Recv(&finished, 1, MPI_C_BOOL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+				std::cout << finished << '\t' << world_rank << std::endl;
+			}
 		}
-		// finished = false;
+		finished = false;
 	}
 
 	MPI_Finalize();
