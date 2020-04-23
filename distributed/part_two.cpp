@@ -123,7 +123,7 @@ auto main() -> int {
 				};
 				while (temp[0] == temp[1]) temp[1] = getRandomInt(0, positions.size()-1);
 				MPI_Send(&temp, 2, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
-
+				std::cout<< temp[0] << temp[1] << '\t';
 				// Get result
 				MPI_Recv(&finished, 1, MPI_C_BOOL, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 			}
