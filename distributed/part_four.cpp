@@ -36,27 +36,29 @@ auto main() -> int {
 		MPI_Recv(&initial, 1, MPI_INT, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 		std::cout << "Final result: " << initial << std::endl;
 	} else {
-		// Copy of node indices
-		std::vector<int> temp(nodes);
+		while() {
+			// Copy of node indices
+			std::vector<int> temp(nodes);
 
-		MPI_Status status;
-		MPI_Recv(&initial, 1, MPI_INT, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, &status);
-		initial += 2;
+			MPI_Status status;
+			MPI_Recv(&initial, 1, MPI_INT, MPI_ANY_SOURCE, 0, MPI_COMM_WORLD, &status);
+			initial += 2;
 
-		std::cout << "Node " << world_rank << ": " << initial << std::endl;
+			std::cout << "Node " << world_rank << ": " << initial << std::endl;
 
-		// Flag previous and current nodes as visited.
-		int prev = status.MPI_SOURCE;
-		temp[prev] = prev == world_size-1
-								? getRandomInt(0, world_size-2)
-								: prev + 1;
-		temp[world_rank] = world_rank == world_size-1
-											? getRandomInt(0, world_size-2)
-											: world_rank + 1;
+			// Flag previous and current nodes as visited.
+			int prev = status.MPI_SOURCE;
+			temp[prev] = prev == world_size-1
+									? getRandomInt(0, world_size-2)
+									: prev + 1;
+			temp[world_rank] = world_rank == world_size-1
+												? getRandomInt(0, world_size-2)
+												: world_rank + 1;
 
-		// Send to a random next node.
-		int to = getRandomInt(0, world_size - 1);
-		MPI_Send(&initial, 1, MPI_INT, temp[to], 0, MPI_COMM_WORLD);
+			// Send to a random next node.
+			int to = getRandomInt(0, world_size - 1);
+			MPI_Send(&initial, 1, MPI_INT, temp[to], 0, MPI_COMM_WORLD);
+		}
 	}
 
 	MPI_Finalize();
