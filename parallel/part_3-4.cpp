@@ -90,9 +90,9 @@ auto getDistancesToCentroid(const vector<vector<int>>& particles, const vector<i
 
 	// Update distances for all the particles
 	#pragma omp parallel for schedule(runtime)
-	for (auto &distance : distances) {
+	for (unsigned i = 0; i < distances.size(); ++i) {
 		for (int axis = 0; axis < 3; ++axis)
-			distance[axis] = centroid[axis] - distance[axis];
+			distances[i][axis] = centroid[axis] - distances[i][axis];
 	}
 
 	return distances;
