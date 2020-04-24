@@ -1,24 +1,19 @@
-# The pre-processor and compiler options.
-#OPTIONS
-CC 	= mpic++
-CFLAGS 	= -Wall -fopenmp -std=c++11 
+CXX 	= mpic++
+CXXFLAGS 	= -Wall -fopenmp -std=c++11
 LDFLAGS = -lgomp -lz
 
 #----------
 
-EXE = bin
+EXES = part_one part_2-3 part_four
 
-OBJS = $(patsubst %.cpp,%.o,$(wildcard *.cpp))
+all: $(EXES)
 
 #----------
 
-$(EXE): $(OBJS)
-	$(CC) $(OBJS) $(LIB_DIRS) $(LLIBS)$(LDFLAGS) -o $(EXE)
-
-$(OBJS): %.o : %.cpp
-	$(CC) $(CFLAGS) -c $<
+%: %.cpp
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $^ -o $@
 
 #----------
 
 clean:
-	rm -f *.o *.*~ *~  $(EXE) 
+	rm -f $(EXES)

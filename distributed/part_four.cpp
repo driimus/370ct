@@ -37,7 +37,7 @@ auto main() -> int {
 	MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
 	std::vector<int> nodes;
-	for (int i = 1; i < world_size; ++i) nodes.push_back(i);
+	for (unsigned i = 1; i < world_size; ++i) nodes.push_back(i);
 
 	// Data that is passed between nodes.
 	int data[3] = {
@@ -71,7 +71,7 @@ auto main() -> int {
 			if (data[2] == 0) {
 				std::cout << "Final: " << data[0] << std::endl;
 				// Notify other nodes to terminate.
-				for (int i = 1; i < world_size; ++i) {
+				for (unsigned i = 1; i < world_size; ++i) {
 					if (i == world_rank) continue;
 					MPI_Send(&data, 3, MPI_INT, i, 0, MPI_COMM_WORLD);
 				}
@@ -81,7 +81,7 @@ auto main() -> int {
 				// Send to a random next node.
 				std::random_shuffle(temp.begin(), temp.end());
 				int to = 0;
-				for (int v:temp) if (v) {to = v; break;}
+				for (int v : temp) if (v) {to = v; break;}
 				std::cout << "Node " << world_rank << ": " << data[0]
 				          << ". From " << status.MPI_SOURCE
 				          << ", passing to node " << to << std::endl;
