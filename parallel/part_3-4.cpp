@@ -147,7 +147,7 @@ void findClosestNeighbours(const vector<vector<int>>& particles) {
 
 	for (int particleIdx = 0; particleIdx < particleCount; ++particleIdx) {
 		// Find the closest neighbour of the current particle.
-		for (int neighbourIdx = i + 1; neighbourIdx < particleCount; ++neighbourIdx) {
+		for (int neighbourIdx = particleIdx + 1; neighbourIdx < particleCount; ++neighbourIdx) {
 			double distance = getDistance(particles[particleIdx], particles[neighbourIdx]);
 
 			// Update closest neighbour for both particles.
@@ -161,7 +161,7 @@ void findClosestNeighbours(const vector<vector<int>>& particles) {
 			}
 		}
 
-		displayNeighbour(particles, i, neighbours[i]);
+		displayNeighbour(particles, particleIdx, neighbours[i]);
 	}
 }
 
