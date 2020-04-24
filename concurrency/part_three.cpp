@@ -51,7 +51,7 @@ void Producer::send(std::string filename) {
 
 	// Read and send file char by char
 	char c;
-	while(file.get(c)) {
+	while (file.get(c)) {
 		sharedBuff.write(c);
 	}
 	// Signal that we're done
@@ -63,7 +63,7 @@ void Producer::send(std::string filename) {
 Consumer::Consumer(Buffer &buff) : sharedBuff(buff) {};
 
 void Consumer::receive() {
-	for(;;) {
+	for (;;) {
 		char c = sharedBuff.read();
 		verse += c;
 
@@ -88,3 +88,16 @@ void Consumer::receive() {
 		}
 	}
 };
+
+auto main() -> int {
+	Buffer sharedBuff;
+	Producer producer { sharedBuff };
+	Consumer consumer { sharedBuff };
+
+	std::thread prod(&Producer::send, &producer, "to_the_rain.txt");
+	std::thread con(&Consumer::receive, &consumer);
+	prod.join();
+	con.join();
+
+	return 0;
+}

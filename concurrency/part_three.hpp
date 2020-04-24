@@ -18,7 +18,7 @@ class Buffer {
 	std::mutex mtx;
 	std::condition_variable condVar;
 
-public:
+ public:
 	Buffer();
 	void write(char c);
 	char read();
@@ -27,7 +27,7 @@ public:
 // Producer transfers one character at a time to the consumer.
 class Producer {
 	Buffer &sharedBuff;
-public:
+ public:
 	Producer(Buffer &buff);
 	void send(std::string filename);
 };
@@ -40,7 +40,7 @@ class Consumer {
 	std::string verse;
 	Buffer &sharedBuff;
 
-public:
+ public:
 	Consumer(Buffer &buff);
 	void receive();
 };

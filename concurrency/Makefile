@@ -3,7 +3,7 @@ CXXFLAGS = -std=c++11 -pthread -Wall -O3
 
 #----------
 
-EXE = app
+EXE = part_1-3
 
 OBJS = $(patsubst %.cpp,%.o,$(wildcard *.cpp))
 
