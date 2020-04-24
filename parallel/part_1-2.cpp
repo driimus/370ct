@@ -22,7 +22,7 @@ auto main() -> int {
 	printSysInfo();
 
 	#pragma omp parallel for schedule(runtime)
-	for (int i=0; i<10; ++i)
+	for (int i = 0; i < 10; ++i)
 		printf("Thread %d processes iteration %d.\n", omp_get_thread_num(), i);
 	return 0;
 };

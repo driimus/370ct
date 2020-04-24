@@ -4,20 +4,16 @@ LDFLAGS = -lgomp
 
 #----------
 
-EXE = app
+EXES = part_1-2 part_3-4
 
-OBJS = $(patsubst %.cpp,%.o,$(wildcard *.cpp))
+all: $(EXES)
 
 #----------
 
-$(EXE): $(OBJS)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) $^ -o $(EXE)
+%: %.cpp
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $^ -o $@
 
-$(OBJS): %.o : %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
 #----------
 
 clean:
-	rm -f *.o *.*~ *~  $(EXE)
-clean-o:
-	rm -f *.o
+	rm -f $(EXES)

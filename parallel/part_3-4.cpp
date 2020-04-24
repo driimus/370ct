@@ -41,7 +41,7 @@ void displayPosition(const vector<int> &position) {
 
 // Prints out the coordinates of every position from a given list.
 void displayPositions(const vector<vector<int>>& positions) {
-	for (int i = 0; i < positions.size(); ++i) {
+	for (unsigned i = 0; i < positions.size(); ++i) {
 		std::cout << "Position " << i + 1 << ": ";
 		displayPosition(positions[i]);
 	}
@@ -66,7 +66,7 @@ auto getCentroid(const vector<vector<int>>& particles) -> vector<int> {
 	int amountOfParticles = particles.size();
 
 	// The geometric center is the arithmetic mean of all the positions.
-	for (int axis = 0; axis < centroid.size(); ++axis) {
+	for (unsigned axis = 0; axis < centroid.size(); ++axis) {
 		// Calculate the sum for each axis.
 		#pragma omp parallel for shared(centroid[axis], particles) reduction(+: centroid[axis])
 		for (int i = 0; i < amountOfParticles; ++i) {
@@ -106,7 +106,7 @@ void moveParticle(vector<int>& particle, vector<int>& distance, int axis) {
 // Moves each particle one unit closer to the centroid.
 void moveParticlesTowardsCentroid(vector<vector<int>>& particles, vector<vector<int>>& distances) {
 	#pragma omp parallel for schedule(runtime)
-	for (int idx = 0; idx < particles.size(); ++idx) {
+	for (unsigned idx = 0; idx < particles.size(); ++idx) {
 
 		// Move one step closer on one of the axes if possible.
 		if (distances[idx][X]) {
@@ -122,9 +122,9 @@ void moveParticlesTowardsCentroid(vector<vector<int>>& particles, vector<vector<
 // Calculates the distance between two positions in a 3D coordinate plane.
 auto getDistance(const vector<int>& p1, const vector<int>& p2) -> double {
 	return sqrt(
-	    pow( p1[X] - p2[X], 2 ) +
-	    pow( p1[Y] - p2[Y], 2 ) +
-	    pow( p1[Z] - p2[Z], 2 )
+	  pow( p1[X] - p2[X], 2 ) +
+	  pow( p1[Y] - p2[Y], 2 ) +
+	  pow( p1[Z] - p2[Z], 2 )
 	);
 }
 
@@ -167,6 +167,7 @@ void findClosestNeighbours(const vector<vector<int>>& particles) {
 
 auto main() -> int {
 
+	// Original particle positions
 	vector<vector<int>> particles = {
 		{    5,   14,   10 },
 		{    7,   -8,  -14 },
