@@ -6,6 +6,7 @@ void sleep(int ms) {
 	std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
 
+
 Buffer::Buffer() {}
 
 void Buffer::write(char c) {
