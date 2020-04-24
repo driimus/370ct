@@ -71,7 +71,7 @@ auto getCentroid(const vector<vector<int>>& particles) -> vector<int> {
 	for (unsigned axis = 0; axis < centroid.size(); ++axis) {
 		int pos = centroid[axis];
 		// Calculate the sum for each axis.
-		#pragma omp parallel for shared(pos, particles) reduction(+: pos)
+		#pragma omp parallel for shared(particles) reduction(+: pos)
 		for (int i = 0; i < amountOfParticles; ++i) {
 			pos += particles[i][axis];
 		}
