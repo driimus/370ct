@@ -51,7 +51,7 @@ void displayPositions(const vector<vector<int>>& positions) {
 void randomlyMoveParticles(vector<vector<int>> &particles) {
 	int sz = particles.size();
 
-	#pragma omp parallel for
+	#pragma omp parallel for schedule(runtime)
 	for (int i = 0; i<sz; ++i) {
 		// Pick a random direction to move in by 1 step.
 		std::pair<int, int> newDir = getRandomDirection();
@@ -69,14 +69,15 @@ auto getCentroid(const vector<vector<int>>& particles) -> vector<int> {
 
 	// The geometric center is the arithmetic mean of all the positions.
 	for (unsigned axis = 0; axis < centroid.size(); ++axis) {
+		int pos = centroid[axis];
 		// Calculate the sum for each axis.
-		#pragma omp parallel for shared(centroid[axis], particles) reduction(+: centroid[axis])
+		#pragma omp parallel for shared(pos, particles) reduction(+: pos)
 		for (int i = 0; i < amountOfParticles; ++i) {
-			centroid[axis] += particles[i][axis];
+			pos += particles[i][axis];
 		}
 
 		// Divide by total amount of particles to get the average.
-		centroid[axis] /= amountOfParticles;
+		centroid[axis] = pos / amountOfParticles;
 	}
 
 	return centroid;
