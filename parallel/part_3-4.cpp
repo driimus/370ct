@@ -161,7 +161,7 @@ void findClosestNeighbours(const vector<vector<int>>& particles) {
 			}
 		}
 
-		displayNeighbour(particles, particleIdx, neighbours[i]);
+		displayNeighbour(particles, particleIdx, neighbours[particleIdx]);
 	}
 }
 
