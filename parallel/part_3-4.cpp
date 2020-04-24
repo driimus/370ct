@@ -49,16 +49,16 @@ void displayPositions(const vector<vector<int>>& positions) {
 
 // Moves every particle from a given list by one unit in a random direction.
 void randomlyMoveParticles(vector<vector<int>> &particles) {
-	// #pragma omp parallel for
-	// {
-		for (auto &particle : particles) {
-			// Pick a random direction to move in by 1 step.
-			std::pair<int, int> newDir = getRandomDirection();
+	int sz = particles.size();
 
-			// Increment or decrement it.
-			particle[newDir.first] = particle[newDir.first] + newDir.second;
-		}
-	// }
+	#pragma omp parallel for
+	for (int i = 0; i<sz; ++i) {
+		// Pick a random direction to move in by 1 step.
+		std::pair<int, int> newDir = getRandomDirection();
+
+		// Increment or decrement it.
+		particles[i][newDir.first] = particles[i][newDir.first] + newDir.second;
+	}
 }
 
 // Computes the geometric centre for all the given particles.
